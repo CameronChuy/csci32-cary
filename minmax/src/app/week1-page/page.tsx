@@ -4,6 +4,7 @@ export default function Page() {
             <img
                 className="h-screen w-screen absolute top-0 right-0 -z-50"
                 src="https://media.istockphoto.com/id/1564441923/photo/stack-of-stones-in-calm-ocean.jpg?s=612x612&w=0&k=20&c=KoGh7oy5ZaBsfdNEe9phv20VWH800WFEkMcZIwMG3BY="
+                alt="Zen backdrop"
             ></img>
             <nav className="flex w-full justify-between items-center p-2">
                 <div className="static">
@@ -92,7 +93,7 @@ export default function Page() {
                         </svg>
 
                         <b className="text-lg">Job Hunt</b>
-                        <p className="text-center">Let's find you your next big break!</p>
+                        <p className="text-center">Let&apos;s find you your next big break!</p>
                     </a>
                     <a
                         href="/week1-page"
@@ -117,7 +118,7 @@ export default function Page() {
                         </svg>
 
                         <b className="text-lg">Recipes</b>
-                        <p className="text-center">We'll find out this week's menu!</p>
+                        <p className="text-center">We&apos;ll find out this week&apos;s menu!</p>
                     </a>
                 </div>
             </main>
