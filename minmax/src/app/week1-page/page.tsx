@@ -17,19 +17,19 @@ export default function Page() {
                 <div className="flex no-wrap w-fit p-2">
                     <button
                         type="button"
-                        className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
+                        className="text-blue backdrop-blur-sm bg-white/50 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
                     >
                         About Me
                     </button>
                     <button
                         type="button"
-                        className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
+                        className="text-blue backdrop-blur-sm bg-white/50 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
                     >
                         Analytics
                     </button>
                     <button
                         type="button"
-                        className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
+                        className="text-blue backdrop-blur-sm bg-white/50 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
                     >
                         Configure
                     </button>
@@ -37,7 +37,7 @@ export default function Page() {
             </nav>
 
             <main className="flex flex-col items-center w-full mx-auto p-4">
-                <div className="flex flex-col items-center w-1/2 backdrop-blur-sm bg-white/30 border border-slate-400 rounded-md">
+                <div className="flex flex-col items-center w-1/2 backdrop-blur-md bg-white/30 border border-slate-400 rounded-md">
                     <h1 className="text-5xl font-serif">Hello, I am Maxine</h1>
                     <h3 className="text-xl font-serif">
                         I am your <i>virtual</i> virtual assistant
@@ -47,7 +47,7 @@ export default function Page() {
                 <div className="w-full flex justify-between p-6">
                     <a
                         href="/week1-page"
-                        className="w-56 h-72 flex flex-col justify-center items-center backdrop-blur-sm bg-white/30 border border-slate-400 rounded-md"
+                        className="w-56 h-72 flex flex-col justify-center items-center backdrop-blur-md bg-white/30 border border-slate-400 rounded-md"
                     >
                         <svg
                             className="w-36 h-36 text-gray-800 dark:text-white"
@@ -71,7 +71,7 @@ export default function Page() {
                     </a>
                     <a
                         href="/week1-page"
-                        className="w-56 h-72 flex flex-col justify-center items-center backdrop-blur-sm bg-white/30 border border-slate-400 rounded-md"
+                        className="w-56 h-72 flex flex-col justify-center items-center backdrop-blur-md bg-white/30 border border-slate-400 rounded-md"
                     >
                         <svg
                             className="w-36 h-36 text-gray-800 dark:text-white"
@@ -96,7 +96,7 @@ export default function Page() {
                     </a>
                     <a
                         href="/week1-page"
-                        className="w-56 h-72 flex flex-col justify-center items-center backdrop-blur-sm bg-white/30 border border-slate-400 rounded-md"
+                        className="w-56 h-72 flex flex-col justify-center items-center backdrop-blur-md bg-white/30 border border-slate-400 rounded-md"
                     >
                         <svg
                             className="w-36 h-36 text-gray-800 dark:text-white"
