@@ -1,4 +1,4 @@
-export default function Page() {
+export default function Home() {
     return (
         <body className="flex min-h-screen min-w-screen">
             <img
