@@ -17,8 +17,5 @@ const config: Config = {
     },
   },
   plugins: [],
-  "compilerOptions": {
-    "jsx": "react-jsx",
-  },
 };
 export default config;

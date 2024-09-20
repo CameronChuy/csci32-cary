@@ -3,7 +3,8 @@ export default function Home() {
         <body className="flex min-h-screen min-w-screen">
             <img
                 className="h-screen w-screen absolute top-0 right-0 -z-50"
-                src="https://media.istockphoto.com/id/1564441923/photo/stack-of-stones-in-calm-ocean.jpg?s=612x612&w=0&k=20&c=KoGh7oy5ZaBsfdNEe9phv20VWH800WFEkMcZIwMG3BY="
+                // src="https://media.istockphoto.com/id/1564441923/photo/stack-of-stones-in-calm-ocean.jpg?s=612x612&w=0&k=20&c=KoGh7oy5ZaBsfdNEe9phv20VWH800WFEkMcZIwMG3BY="
+                src="https://i.redd.it/p507vesjd9w81.jpg"
                 alt="Zen backdrop"
             ></img>
             <nav className="flex w-full justify-between items-center p-2">
