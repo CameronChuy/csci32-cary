@@ -16,6 +16,13 @@ export default function Home() {
                     {' '}
                     Week 1 Page
                 </Link>
+                <Link
+                    href="/button"
+                    className="flex flex-col items-center w-1/2 mt-10 p-2 backdrop-blur-md bg-white/30 border border-slate-400 rounded-md"
+                >
+                    {' '}
+                    Button
+                </Link>
             </main>
         </div>
     )
