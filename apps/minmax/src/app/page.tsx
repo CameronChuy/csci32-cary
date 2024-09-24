@@ -23,6 +23,13 @@ export default function Home() {
                     {' '}
                     Button
                 </Link>
+                <Link
+                    href="/input"
+                    className="flex flex-col items-center w-1/2 mt-10 p-2 backdrop-blur-md bg-white/30 border border-slate-400 rounded-md"
+                >
+                    {' '}
+                    Input
+                </Link>
             </main>
         </div>
     )
