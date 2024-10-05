@@ -12,8 +12,25 @@ generator client {
 }
 
 model User {
-  id            String    @id @default(cuid())
+  user_id       String    @id @default(cuid())
   name          String?
   email         String?   @unique
   emailVerified DateTime?
+  recipes       Recipe[]
 }
+
+model Ingredient {
+  ingredient_id String    @id @default(cuid())
+  name          String?
+  description   String?   @unique
+  recipes       Recipe[]
+ }
+
+model Recipe {
+  recipe_id            String    @id @default(cuid())
+  name          String?
+  description   String?   @unique
+  ingredients   Ingredient[]
+  user          User @relation(fields: [user_id], references: [user_id])
+  user_id       String
+ }
