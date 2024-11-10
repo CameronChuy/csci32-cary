@@ -9,45 +9,46 @@ export default function RandomNumberGame({ randomNumber, endGame, maxGuessCount 
     const [guessCount, setGuessCount] = useState(0)
     const [feedback, setFeedback] = useState('')
     const [guess, setGuess] = useState(0)
-    const [hasWon, setGameOver] = useState(false)
+    const [gameOutcome, setGameOutcome] = useState<'win' | 'lose' | null>(null)
 
     function submitGuess(e: React.FormEvent<HTMLFormElement>) {
         e.preventDefault()
         const newGuessCount = guessCount + 1
-        if (guess < randomNumber) {
+        if (guess === randomNumber) {
+            setFeedback(`You won in ${newGuessCount} guesses!`)
+            setGameOutcome("win")
+        } else if (newGuessCount === maxGuessCount) {
+            setFeedback(`You Lost :( The correct number was ${randomNumber}`)
+            setGameOutcome("lose")
+        } else if (guess < randomNumber) {
             setFeedback('Higher')
         } else if (guess > randomNumber) {
             setFeedback('Lower')
-        } else if (guess === randomNumber) {
-            setFeedback('You won in ${newGuessCount} guesses!')
-            setGameOver(true)
-        } else if (newGuessCount === maxGuessCount) {
-            setFeedback('You Lost :(')
-            setGameOver(true)
         }
         setGuessCount(newGuessCount)
     }
+
     function onSubmitEndGame(e: React.FormEvent<HTMLFormElement>) {
         e.preventDefault()
         setGuessCount(0)
         setFeedback('')
-        setGameOver(false)
+        setGameOutcome(null)
         endGame()
     }
     return (
         <div
             className={`${maxGuessCount - 1 === guessCount ? 'bg-red-500' : ''}
-            ${maxGuessCount === guessCount ? 'bg-red-200' : ''}
-            ${hasWon ? '!bg-green-100' : ''}
+            ${gameOutcome === 'win' ? 'bg-green-100' : ''}
+            ${gameOutcome === 'lose' ? 'bg-red-200' : ''}
             p-10 rounded-md transition-color`}
         >
-            {hasWon ? (
+            {gameOutcome ? (
                 <form className="flex flex-col" onSubmit={onSubmitEndGame}>
                     <div>{feedback}</div>
-                    <Button>End Game</Button>
+                    <Button onClick={() => {}}>End Game</Button>
                 </form>
             ) : (
-                <form className="flex flex-col" onSubmit={submitGuess}>
+                <form className="flex flex-col gap-2" onSubmit={submitGuess}>
                     <Input
                         name="guess"
                         id="guess"
@@ -59,7 +60,7 @@ export default function RandomNumberGame({ randomNumber, endGame, maxGuessCount 
                     <div>{feedback}</div>
                     <div>You have guessed {guessCount} times</div>
                     <div>You have {maxGuessCount - guessCount} guesses left</div>
-                    <Button>Feeling Lucky</Button>
+                    <Button onClick={() => {}}>Feeling Lucky</Button>
                 </form>
             )}
         </div>

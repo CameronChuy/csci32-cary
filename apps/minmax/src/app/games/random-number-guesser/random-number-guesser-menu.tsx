@@ -20,11 +20,11 @@ export default function RandomNumberGameMenu({ startGame }: GuessingGameMenuProp
     return (
         <div className="flex flex-col">
             {showSettings ? (
-                <div className="flex flex-col">
+                <div className="flex flex-col w-full items-center gap-2">
                     <header>
                         <h1>Please enter the minimum and maximum number values.</h1>
                     </header>
-                    <form onSubmit={onSubmitSettings}>
+                    <form className='flex flex-col gap-2 items-center' onSubmit={onSubmitSettings}>
                         <Input defaultValue={0} type="number" placeholder="Minimum Number Value" name="min" id="min" />
                         <Input defaultValue={10} type="number" placeholder="Maximum Number Value" name="max" id="max" />
                         <Input
@@ -34,11 +34,11 @@ export default function RandomNumberGameMenu({ startGame }: GuessingGameMenuProp
                             name="maxGuessCount"
                             id="maxGuessCount"
                         />
-                        <Button>Submit</Button>
+                        <Button onClick={() => {}}>Submit</Button>
                     </form>
                 </div>
             ) : (
-                <div className="flex flex-col">
+                <div className="flex flex-col w-full items-center gap-2">
                     <header>
                         <h1>Ready to play the Guessing Game?</h1>
                     </header>
@@ -48,7 +48,7 @@ export default function RandomNumberGameMenu({ startGame }: GuessingGameMenuProp
                             setShowSettings(true)
                         }}
                     >
-                        <Button>Get Started</Button>
+                        <Button onClick={() => {}}>Get Started</Button>
                     </form>
                 </div>
             )}
