@@ -56,7 +56,7 @@ export class RecipeService {
 
     async createOneRecipe(props: CreateOneRecipeProps) {
         const { name, description, ingredient_measurement } = props
-        const spoof_user_id = 'cm46dk6mj0000ddook3t4zy9g'
+        const spoof_user_id = 'cm4bbgy5200002uto24lwggl2'
         const recipe = await this.prisma.recipe.create({
             data: {
                 user: {
