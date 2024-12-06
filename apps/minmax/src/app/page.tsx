@@ -30,6 +30,13 @@ export default function Home() {
                     {' '}
                     Input
                 </Link>
+                <Link
+                    href="/games/random-number-guesser"
+                    className="flex flex-col items-center w-1/2 mt-10 p-2 backdrop-blur-md bg-white/30 border border-slate-400 rounded-md"
+                >
+                    {' '}
+                    Random Number Guesser
+                </Link>
             </main>
         </div>
     )
