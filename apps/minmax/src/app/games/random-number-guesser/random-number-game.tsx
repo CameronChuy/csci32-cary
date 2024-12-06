@@ -3,7 +3,7 @@
 import React, { useState } from 'react'
 import { GuessingGameEngineProps } from './page'
 import { Button } from '@repo/ui/button'
-import Input from '@repo/ui/input'
+import {Input} from '@repo/ui/input'
 
 export default function RandomNumberGame({ randomNumber, endGame, maxGuessCount }: GuessingGameEngineProps) {
     const [guessCount, setGuessCount] = useState(0)
@@ -55,7 +55,7 @@ export default function RandomNumberGame({ randomNumber, endGame, maxGuessCount 
                         type="number"
                         placeholder="Enter your Guess"
                         value={guess}
-                        setValue={(newValue) => setGuess(Number(newValue))}
+                        onChange = {(newValue) => setGuess(Number(newValue))}
                     />
                     <div>{feedback}</div>
                     <div>You have guessed {guessCount} times</div>

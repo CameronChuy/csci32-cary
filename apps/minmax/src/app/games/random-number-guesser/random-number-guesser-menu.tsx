@@ -1,7 +1,7 @@
 'use client'
 
 import { Button } from '@repo/ui/button'
-import Input from '@repo/ui/input'
+import { Input } from '@repo/ui/input'
 import { GuessingGameMenuProps } from './page'
 import { useState } from 'react'
 
@@ -24,7 +24,7 @@ export default function RandomNumberGameMenu({ startGame }: GuessingGameMenuProp
                     <header>
                         <h1>Please enter the minimum and maximum number values.</h1>
                     </header>
-                    <form className='flex flex-col gap-2 items-center' onSubmit={onSubmitSettings}>
+                    <form className="flex flex-col gap-2 items-center" onSubmit={onSubmitSettings}>
                         <Input defaultValue={0} type="number" placeholder="Minimum Number Value" name="min" id="min" />
                         <Input defaultValue={10} type="number" placeholder="Maximum Number Value" name="max" id="max" />
                         <Input

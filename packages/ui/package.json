@@ -11,12 +11,19 @@
     "exports": {
         "./styles.css": "./dist/index.css",
         "./button": "./src/button.tsx",
-        "./input": "./src/input.tsx",
         "./card": "./src/card.tsx",
-        "./code": "./src/code.tsx",
-        "./variant": "./src/variant.ts",
         "./size": "./src/size.ts",
-        "./token": "./src/token.ts"
+        "./variant": "./src/variant.ts",
+        "./code": "./src/code.tsx",
+        "./input": "./src/input.tsx",
+        "./flex": "./src/flex.tsx",
+        "./field": "./src/field.tsx",
+        "./fieldGroup": "./src/fieldGroup.tsx",
+        "./header": "./src/header.tsx",
+        "./label": "./src/label.tsx",
+        "./wrapper": "./src/wrapper.tsx",
+        "./tag": "./src/tag.tsx",
+        "./tokens": "./src/tokens.ts"
     },
     "scripts": {
         "build": "tailwindcss -i ./src/styles.css -o ./dist/index.css",

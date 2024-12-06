@@ -3,7 +3,7 @@
 import { Button } from '@repo/ui/button'
 import { Size } from '../../../../../packages/ui/src/size'
 import { Variant } from '@repo/ui/variant'
-import Input from '@repo/ui/input'
+import { Input } from '@repo/ui/input'
 import { useState } from 'react'
 
 export default function InputPage() {
