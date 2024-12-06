@@ -2,7 +2,7 @@
 
 import { ReactNode } from 'react'
 import { getSizeStyles, Size } from './size'
-import { getVariantBackgroundStyles, getVariantButtonTextStyles, getVariantOutlineStyles, Variant } from './variant'
+import { getVariantBackgroundCssClasses, getVariantButtonTextStyles, getVariantOutlineStyles, Variant } from './variant'
 import { getCommonButtonStyles } from './tokens'
 
 interface ButtonProps {
@@ -26,7 +26,7 @@ export const Button = ({
 }: ButtonProps) => {
   const sizeCssClasses = getSizeStyles(size)
   const variantButtonTextCssClasses = getVariantButtonTextStyles(variant)
-  const variantBackgroundCssClasses = getVariantBackgroundStyles(variant)
+  const variantBackgroundCssClasses = getVariantBackgroundCssClasses(variant)
   const variantOutlineCssClasses = getVariantOutlineStyles(variant)
   const commonCssClasses = getCommonButtonStyles()
 

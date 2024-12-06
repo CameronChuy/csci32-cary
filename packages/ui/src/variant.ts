@@ -6,7 +6,7 @@ export enum Variant {
     ERROR,
 }
 
-export function getVariantStyles(variant: Variant) {
+export function getVariantBackgroundCssClasses(variant: Variant) {
     switch (variant) {
         case Variant.ERROR:
             return 'bg-red-600 hover:bg-red-700 active:bg-red-800'

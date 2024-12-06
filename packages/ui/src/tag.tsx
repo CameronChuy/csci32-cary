@@ -1,5 +1,5 @@
 import classNames from 'classnames'
-import { getVariantBackgroundStyles, getVariantButtonTextStyles, Variant } from './variant'
+import { getVariantButtonTextStyles, Variant } from './variant'
 import { getCommonButtonStyles } from './tokens'
 import { getSizeStyles, Size } from './size'
 
@@ -11,7 +11,7 @@ export type TagProps = {
 }
 
 export function Tag({ children, className = '', variant = Variant.PRIMARY, onClickX }: TagProps) {
-  const tagBackgroundStyles = getVariantBackgroundStyles(variant)
+  const tagBackgroundStyles = '' // or remove this line if not needed
   const tagTextStyles = getVariantButtonTextStyles(variant)
   const tagButtonStyles = getCommonButtonStyles()
   const tagSizeStyles = getSizeStyles(Size.XSMALL)

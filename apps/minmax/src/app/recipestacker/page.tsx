@@ -1,7 +1,11 @@
 'use client'
+import RecipeHome from '@/components/Recipe/RecipeHome'
+import { RecipeProvider } from '@/context/RecipeContext'
 
 export default function Home() {
   return (
-    <div>🚧 Recipestacker under construction. 🚧</div>
+    <RecipeProvider>
+      <RecipeHome />
+    </RecipeProvider>
   )
 }

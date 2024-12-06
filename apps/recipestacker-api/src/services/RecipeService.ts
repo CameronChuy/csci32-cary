@@ -102,7 +102,7 @@ export class RecipeService {
             },
             data: {
                 ...rest,
-                user: {
+                user_id: {
                     connect: { user_id: user_id },
                 },
                 ingredient_measurement: {
