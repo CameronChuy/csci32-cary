@@ -9,7 +9,7 @@
         "db:migrate:deploy": "turbo run db:migrate:deploy",
         "db:push": "turbo run db:push",
         "db:seed": "turbo run db:seed",
-        "build": "turbo build", 
+        "build": "turbo build",
         "dev": "turbo dev",
         "lint": "turbo lint",
         "generate": "turbo run generate",
@@ -17,7 +17,8 @@
     },
     "dependencies": {
         "@prisma/client": "5.10.2",
-        "dotenv": "^16.4.5"
+        "dotenv": "^16.4.5",
+        "swr": "^2.2.5"
     },
     "devDependencies": {
         "pino-pretty": "^13.0.0",
