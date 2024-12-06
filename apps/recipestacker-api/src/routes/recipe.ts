@@ -31,41 +31,59 @@ export const IngredientMeasurementTypeboxType = Type.Object({
 
 export const RecipeType = Type.Object({
     recipe_id: Type.String(),
-  name: Type.String(),
-  description: Type.String(),
-  user_id: Type.String(),
-  ingredient_measurement: Type.Array(IngredientMeasurementTypeboxType), 
+    name: Type.String(),
+    description: Type.String(),
+    user_id: Type.String(),
+    ingredient_measurement: Type.Array(IngredientMeasurementTypeboxType),
 })
 
 export const RecipeNotFoundType = Type.Object({
     statusCode: Type.Literal(404),
     message: Type.String(),
-    error: Type.Literal("Not Found")
+    error: Type.Literal('Not Found'),
 })
 
 const recipe: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
-    fastify.withTypeProvider<TypeBoxTypeProvider>().get('/recipes', {
-        schema: {
+    fastify.withTypeProvider<TypeBoxTypeProvider>().get(
+        '/recipes',
+        {
             schema: {
                 tags: ['Endpoint: Get all recipes.'],
                 description: 'Endpoint to get all recipes',
-                body: createRecipeTypeBoxType,
                 response: {
                     200: Type.Array(RecipeType),
-                    404: RecipeNotFoundType
+                    404: RecipeNotFoundType,
                 },
             },
         },
-    },
-    async function (request: any, reply) {
-        return fastify.recipeService.findManyRecipes({
-            name: request.query.name,
-            sortColumn: request.query.sortColumn,
-            sortOrder: request.query.sortOrder,
-            take: request.query.take,
-            skip: request.query.skip,
-        })
-    },)
+        async function (request: any, reply) {
+            return fastify.recipeService.findManyRecipes({
+                name: request.query.name,
+                sortColumn: request.query.sortColumn,
+                sortOrder: request.query.sortOrder,
+                take: request.query.take,
+                skip: request.query.skip,
+            })
+        },
+    )
+    fastify.withTypeProvider<TypeBoxTypeProvider>().get(
+        '/recipes/:id',
+        {
+            schema: {
+                tags: ['Endpoint: Get one recipe'],
+                description: 'Endpoint to get one recipe',
+                response: {
+                    200: RecipeType,
+                    400: RecipeNotFoundType,
+                },
+            },
+        },
+        async function (request: any, reply) {
+            return fastify.recipeService.findOneRecipe({
+                recipe_id: request.params.id,
+            })
+        },
+    )
     fastify.withTypeProvider<TypeBoxTypeProvider>().post(
         '/recipes',
         {
