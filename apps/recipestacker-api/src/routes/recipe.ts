@@ -5,7 +5,7 @@ import { Type } from '@sinclair/typebox'
 // index.js
 console.log('DATABASE_URL', process.env.DATABASE_URL)
 
-export const CreateIngredientMeasurementTypeboxType = Type.Object({
+export const UpsertIngredientMeasurementTypeboxType = Type.Object({
     unit: Type.String(),
     quantity: Type.Number(),
     ingredient_id: Type.Optional(Type.String()),
@@ -16,7 +16,7 @@ export const CreateIngredientMeasurementTypeboxType = Type.Object({
 export const createRecipeTypeBoxType = Type.Object({
     name: Type.String(),
     description: Type.String(),
-    measurements: Type.Array(CreateIngredientMeasurementTypeboxType),
+    measurements: Type.Array(UpsertIngredientMeasurementTypeboxType),
 })
 
 export const IngredientMeasurementTypeboxType = Type.Object({
@@ -35,6 +35,11 @@ export const RecipeType = Type.Object({
     description: Type.String(),
     user_id: Type.String(),
     ingredient_measurement: Type.Array(IngredientMeasurementTypeboxType),
+})
+export const UpdateRecipeTypeboxType = Type.Object({
+    name: Type.Optional(Type.String()),
+    description: Type.Optional(Type.String()),
+    ingredient_measurement: Type.Optional(Type.Array(UpsertIngredientMeasurementTypeboxType)),
 })
 
 export const RecipeNotFoundType = Type.Object({
@@ -66,6 +71,24 @@ const recipe: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
             })
         },
     )
+    fastify.withTypeProvider<TypeBoxTypeProvider>().put('/recipes/:id', {
+        schema: {
+            tags: ['Endpoint: Update a recipe'],
+            description: 'Endpoint to update a recipe',
+            body: UpdateRecipeTypeboxType,
+            response: {
+                200: Type.Object({ recipe_id: Type.String() }),
+                400: Type.Object({ message: Type.String() }),
+            },
+        },
+    }, async function (request: any, reply){
+        return fastify.recipeService.updateOneRecipe({
+            recipe_id: request.params.id,
+            name: request.body.name,
+            description: request.body.description,
+            ingredient_measurement: request.body.ingredient_measurement,
+        })
+    })
     fastify.withTypeProvider<TypeBoxTypeProvider>().get(
         '/recipes/:id',
         {

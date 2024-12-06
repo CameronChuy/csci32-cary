@@ -35,7 +35,12 @@ interface CreateIngredientMeasurementProps {
     quantity: number
 }
 
-interface UpdateOneRecipeProps {}
+interface UpdateOneRecipeProps {
+    recipe_id: string
+    name: string
+    description: string
+    ingredient_measurement: CreateIngredientMeasurementProps[]
+}
 
 interface CreateOneRecipeProps {
     name: string
@@ -70,10 +75,10 @@ export class RecipeService {
     }
 
     async findOneRecipe(props: FindOneRecipeProps) {
-        this.logger.info({props}, 'findOneRecipe')
+        this.logger.info({ props }, 'findOneRecipe')
         const { recipe_id } = props
         return this.prisma.recipe.findFirst({
-            where:{
+            where: {
                 recipe_id,
             },
             include: {
@@ -86,27 +91,75 @@ export class RecipeService {
         })
     }
 
-    async updateOneRecipe(props: UpdateOneRecipeProps) {}
+    async updateOneRecipe(props: UpdateOneRecipeProps) {
+        this.logger.info({ props }, 'updateOneRecipe')
+        const { recipe_id } = props
+        const spoof_user_id = 'cm4bbgy5200002uto24lwggl2'
+        const { ingredient_measurement, ...rest } = props
+        const updatedRecipe = await this.prisma.recipe.update({
+            where: {
+                recipe_id,
+            },
+            data: {
+                ...rest,
+                user: {
+                    connect: { user_id: spoof_user_id },
+                },
+                ingredient_measurement: {
+                    upsert: ingredient_measurement?.map(
+                        ({ ingredient_id, quantity, unit, ingredient_name, ingredient_description }) => ({
+                            where: {
+                                ingredient_id_recipe_id: {
+                                    ingredient_id: ingredient_id || '',
+                                    recipe_id,
+                                },
+                            },
+                            update: {
+                                quantity,
+                                unit,
+                            },
+                            create: {
+                                ingredient: ingredient_id
+                                    ? {
+                                          connect: {
+                                              ingredient_id,
+                                          },
+                                      }
+                                    : {
+                                          create: {
+                                              name: ingredient_name,
+                                              description: ingredient_description,
+                                          },
+                                      },
+                                unit,
+                                quantity,
+                            },
+                        }),
+                    ),
+                },
+            },
+        })
+    }
 
     async findManyRecipes(props: FindManyRecipeProps) {
         this.logger.info({ props }, 'findManyRecipes')
         const { name, sortColumn = 'name', sortOrder = SortOrder.ASC, take = DEFAULT_TAKE, skip = DEFAULT_SKIP } = props
         const orderBy = this.getRecipeOrderBy(sortColumn, sortOrder)
-            return this.prisma.recipe.findMany({
-                where: {
-                    name,
-                },
-                orderBy,
-                take,
-                skip,
-                include: {
-                    ingredient_measurement: {
-                        include: {
-                            ingredient: true,
-                        },
+        return this.prisma.recipe.findMany({
+            where: {
+                name,
+            },
+            orderBy,
+            take,
+            skip,
+            include: {
+                ingredient_measurement: {
+                    include: {
+                        ingredient: true,
                     },
                 },
-            })
+            },
+        })
     }
 
     async createOneRecipe(props: CreateOneRecipeProps) {
