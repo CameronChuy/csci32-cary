@@ -17,12 +17,18 @@ interface RecipeServiceProps {
 
 interface FindOneRecipeProps {}
 
-interface FindManyRecipeProps {}
+interface FindManyRecipeProps {
+    name?: string
+    sortColumn?: string
+    sortOrder?: SortOrder
+    take?: number
+    skip?: number
+}
 
 interface CreateIngredientMeasurementProps {
     ingredient_id?: string
-    ingredient_name: string
-    ingredient_description: string
+    ingredient_name?: string
+    ingredient_description?: string
     unit: string
     quantity: number
 }
@@ -35,7 +41,10 @@ interface CreateOneRecipeProps {
     ingredient_measurement: CreateIngredientMeasurementProps[]
 }
 
-interface GetRecipeOrderByProps {}
+interface GetRecipeOrderByProps {
+    sortColumn: string
+    sortOrder: SortOrder
+}
 
 export class RecipeService {
     logger: FastifyBaseLogger
@@ -46,13 +55,42 @@ export class RecipeService {
         this.prisma = prisma
     }
 
-    getRecipeOrderBy({}: GetRecipeOrderByProps) /*: Prisma.RecipeOrderByWithRelationInput*/ {}
+    getRecipeOrderBy({
+        sortOrder,
+        sortColumn,
+    }: GetRecipeOrderByProps):
+        | Prisma.RecipeOrderByWithRelationInput
+        | Prisma.RecipeOrderByWithRelationInput[]
+        | undefined {
+        return {
+            [sortColumn]: sortOrder,
+        }
+    }
 
     async findOneRecipe({}: FindOneRecipeProps) {}
 
     async updateOneRecipe(props: UpdateOneRecipeProps) {}
 
-    async findManyRecipes(props: FindManyRecipeProps) {}
+    async findManyRecipes(props: FindManyRecipeProps) {
+        this.logger.info({ props }, 'findManyRecipes')
+        const { name, sortColumn = 'name', sortOrder = SortOrder.ASC, take = DEFAULT_TAKE, skip = DEFAULT_SKIP } = props
+        const orderBy = this.getRecipeOrderBy(sortColumn, sortOrder)
+            return this.prisma.recipe.findMany({
+                where: {
+                    name,
+                },
+                orderBy,
+                take,
+                skip,
+                include: {
+                    ingredient_measurement: {
+                        include: {
+                            ingredient: true,
+                        },
+                    },
+                },
+            })
+    }
 
     async createOneRecipe(props: CreateOneRecipeProps) {
         const { name, description, ingredient_measurement } = props
