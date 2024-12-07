@@ -14,5 +14,8 @@
 
     "editor.defaultFormatter": "esbenp.prettier-vscode",
     "editor.formatOnSave": true,
-    "editor.renderWhitespace": "none"
+    "editor.renderWhitespace": "none",
+    "github.copilot.advanced": {
+        
+    }
 }

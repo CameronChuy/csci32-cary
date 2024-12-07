@@ -5,8 +5,8 @@ export type CreateRecipeProps = {
       quantity: number
       unit: string
     }[]
-    description: string
-  }
+    description: string;
+  };
 
   async function postHelper({ path, body }: { path: string; body: string }) {
     return fetch(`${process.env.NEXT_PUBLIC_RECIPESTACKER_API_URL}${path}`, {

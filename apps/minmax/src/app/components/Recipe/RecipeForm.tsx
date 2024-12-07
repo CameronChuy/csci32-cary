@@ -1,14 +1,19 @@
 import { FieldGroup } from '@repo/ui/fieldGroup'
 import { Header } from '@repo/ui/header'
 import { Label } from '@repo/ui/label'
-import { useState } from 'react'
+import { useContext, useState } from 'react'
 import { Field } from '@repo/ui/field'
 import { Input } from '@repo/ui/input'
 import { Flex } from '@repo/ui/flex'
 import { Button } from '@repo/ui/button'
 import { Variant } from '@repo/ui/variant'
+import { RecipeContext } from '@/context/RecipeContext'
+import { UserContext } from '@/context/UserContext'
+import { createRecipe, CreateRecipeProps } from '@/hooks/useRecipes'
 
 export function RecipeForm() {
+    const { setShowRecipeForm } = useContext(RecipeContext)
+    const { user_id } = useContext(UserContext) // Get user_id from UserContext
     const [recipeFormData, setRecipeFormData] = useState({ name: '', description: '' })
     const [ingredientMeasurements, setIngredientMeasurements] = useState([
         {
@@ -21,10 +26,50 @@ export function RecipeForm() {
         },
     ])
 
+    async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+        e.preventDefault()
+        const data = new FormData(e.currentTarget)
+
+        const recipeName = data.get('recipe-name') as string
+        const recipeDescription = data.get('recipe-description') as string
+        const ingredient_measurements = []
+        for (const key of data.keys()) {
+            if (key.includes('ingredient-name')) {
+                const ingredient_name = data.get(key) as string
+                const unit = data.get(key.replace('ingredient-name', 'ingredient-unit')) as string
+                const quantity = Number(data.get(key.replace('ingredient-name', 'ingredient-quantity')))
+                if (!ingredient_name || !unit || !quantity) {
+                    continue
+                }
+                ingredient_measurements.push({
+                    ingredient_name,
+                    unit,
+                    quantity,
+                })
+            }
+        }
+        if (typeof recipeName !== 'string' || typeof recipeDescription !== 'string') {
+            return alert('Please fill out all fields')
+        }
+        if (ingredient_measurements.length === 0) {
+            return alert('Please add at least one ingredient')
+        }
+        const recipeData: CreateRecipeProps = {
+            name: recipeName,
+            description: recipeDescription,
+            measurements: ingredient_measurements,
+            user_id: user_id, // Use user_id from UserContext
+        }
+        await createRecipe(recipeData)
+        setRecipeFormData({ name: '', description: '' })
+        setShowRecipeForm(false)
+        alert(`Your recipe ${recipeName} has been created!`)
+    }
+
     return (
         <>
             <Header variant="h2">Create Recipe</Header>
-            <form className="flex flex-col gap-4">
+            <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
                 <FieldGroup className="flex flex-col gap-4">
                     <Field>
                         <Label htmlFor="recipe-name">Recipe Name</Label>
@@ -51,10 +96,10 @@ export function RecipeForm() {
                 </FieldGroup>
                 {ingredientMeasurements.map(({ unit, quantity, ingredient }, index) => {
                     return (
-                        <FieldGroup className="ml-4 bg-gray-100 shaodw-sm rounded-lg p-4">
+                        <FieldGroup className="ml-4 bg-gray-100 shadow-sm rounded-lg p-4" key={index}>
                             <Flex>
                                 <Label>Ingredient {index + 1}</Label>
-                                {setIngredientMeasurements.length > 1 && (
+                                {ingredientMeasurements.length > 1 && (
                                     <Button
                                         variant={Variant.SECONDARY}
                                         onClick={() => {
@@ -72,8 +117,8 @@ export function RecipeForm() {
                                 placeholder="Enter ingredient name"
                                 variant={Variant.SECONDARY}
                                 value={ingredient.name}
-                                name={`ingredient-name-$(index)`}
-                                id={`ingredient-name-$(index)`}
+                                name={`ingredient-name-${index}`}
+                                id={`ingredient-name-${index}`}
                                 onChange={(newIngredientName) => {
                                     const newIngredientMeasurements = [
                                         // take the ingredients before the current index
@@ -95,9 +140,9 @@ export function RecipeForm() {
                             <Input
                                 placeholder="Enter ingredient quantity"
                                 variant={Variant.SECONDARY}
-                                value={ingredient.name}
-                                name={`ingredient-quantity-$(index)`}
-                                id={`ingredient-quantity-$(index)`}
+                                value={quantity}
+                                name={`ingredient-quantity-${index}`}
+                                id={`ingredient-quantity-${index}`}
                                 onChange={(newQuantity) => {
                                     const newIngredientMeasurements = [
                                         // take the ingredients before the current index
@@ -105,7 +150,7 @@ export function RecipeForm() {
                                         // update the ingredient at the current index
                                         {
                                             ...ingredientMeasurements[index],
-                                            quantity: newQuantity,
+                                            quantity: Number(newQuantity), // Ensure quantity is a number
                                         },
                                         // take the ingredients after the current index
                                         ...ingredientMeasurements.slice(index + 1),
@@ -116,9 +161,9 @@ export function RecipeForm() {
                             <Input
                                 placeholder="Enter ingredient unit"
                                 variant={Variant.SECONDARY}
-                                value={ingredient.name}
-                                name={`ingredient-unit-$(index)`}
-                                id={`ingredient-unit-$(index)`}
+                                value={unit}
+                                name={`ingredient-unit-${index}`}
+                                id={`ingredient-unit-${index}`}
                                 onChange={(newUnit) => {
                                     const newIngredientMeasurements = [
                                         // take the ingredients before the current index
@@ -155,7 +200,7 @@ export function RecipeForm() {
                     >
                         Add another ingredient
                     </Button>
-                    <Button variant={Variant.PRIMARY}>Submit</Button>
+                    <Button variant={Variant.PRIMARY} type='submit'>Submit</Button>
                 </Flex>
             </form>
         </>

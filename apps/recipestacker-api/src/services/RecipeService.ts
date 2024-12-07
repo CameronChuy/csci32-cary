@@ -82,7 +82,7 @@ export class RecipeService {
                 recipe_id,
             },
             include: {
-                ingredient_measurement: {
+                ingredient_measurements: {
                     include: {
                         ingredient: true,
                     },
@@ -102,10 +102,10 @@ export class RecipeService {
             },
             data: {
                 ...rest,
-                user_id: {
+                user: {
                     connect: { user_id: user_id },
                 },
-                ingredient_measurement: {
+                ingredient_measurements: {
                     upsert: ingredient_measurement?.map(
                         ({ ingredient_id, quantity, unit, ingredient_name, ingredient_description }) => ({
                             where: {
@@ -144,7 +144,7 @@ export class RecipeService {
     async findManyRecipes(props: FindManyRecipeProps) {
         this.logger.info({ props }, 'findManyRecipes')
         const { name, sortColumn = 'name', sortOrder = SortOrder.ASC, take = DEFAULT_TAKE, skip = DEFAULT_SKIP } = props
-        const orderBy = this.getRecipeOrderBy(sortColumn, sortOrder)
+        const orderBy = this.getRecipeOrderBy({sortColumn, sortOrder})
         return this.prisma.recipe.findMany({
             where: {
                 name,
@@ -153,7 +153,7 @@ export class RecipeService {
             take,
             skip,
             include: {
-                ingredient_measurement: {
+                ingredient_measurements: { // Use the correct field name
                     include: {
                         ingredient: true,
                     },
@@ -174,7 +174,7 @@ export class RecipeService {
                 },
                 name,
                 description,
-                ingredient_measurement: {
+                ingredient_measurements: {
                     create: ingredient_measurement.map(
                         ({ ingredient_id, ingredient_name, ingredient_description, unit, quantity }) => ({
                             ingredient: ingredient_id
