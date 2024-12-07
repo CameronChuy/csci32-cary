@@ -20,7 +20,7 @@ export default function InputPage() {
                     name="Name"
                     id="name"
                     placeholder="Name"
-                    setValue={setName}
+                    onChange={(e) => setName(e.target.value)}
                     value={name}
                 ></Input>
                 <Button onClick={() => alert(`Your name is: ${name}`)} size={Size.MEDIUM} variant={Variant.PRIMARY}>
@@ -34,7 +34,7 @@ export default function InputPage() {
                     name="Hobby"
                     id="hobby"
                     placeholder="Hobby"
-                    setValue={setHobby}
+                    onChange={(e) => setHobby(e.target.value)}
                     value={hobby}
                 ></Input>
                 <Button onClick={() => alert(`Your hobby is: ${hobby}`)} size={Size.MEDIUM} variant={Variant.SECONDARY}>
@@ -48,7 +48,7 @@ export default function InputPage() {
                     name="Goal"
                     id="goal"
                     placeholder="Goal"
-                    setValue={setGoal}
+                    onChange={(e) => setGoal(e.target.value)}
                     value={goal}
                 ></Input>
                 <Button onClick={() => alert(`Your goal is: ${goal}`)} size={Size.MEDIUM} variant={Variant.TERTIARY}>

@@ -13,7 +13,7 @@ const UserContext = createContext<UserContextType>({
 
 const UserProvider = async ({ children }: { children: ReactNode }) => {
     const user = "cm4bbgy5200002uto24lwggl2";
-    const [user_id, setUser] = useState(user?.id || user);
+    const [user_id, setUser] = useState(user);
 
     return (
         <UserContext.Provider
