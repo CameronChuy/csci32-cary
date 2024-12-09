@@ -15,7 +15,7 @@ services:
         environment:
             MYSQL_DATABASE: turborepo
             MYSQL_ALLOW_EMPTY_PASSWORD: 1
-        #env_file:
-        # - .env
+        env_file:
+         - .env
         volumes:
             - database:/var/lib/mysql

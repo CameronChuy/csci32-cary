@@ -16,7 +16,7 @@ export const UpsertIngredientMeasurementTypeboxType = Type.Object({
 export const createRecipeTypeBoxType = Type.Object({
     name: Type.String(),
     description: Type.String(),
-    measurements: Type.Array(UpsertIngredientMeasurementTypeboxType),
+    ingredient_measurement: Type.Array(UpsertIngredientMeasurementTypeboxType),
 })
 
 export const IngredientMeasurementTypeboxType = Type.Object({
@@ -62,33 +62,47 @@ const recipe: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
             },
         },
         async function (request: any, reply) {
-            return fastify.recipeService.findManyRecipes({
+            const recipes = await fastify.recipeService.findManyRecipes({
                 name: request.query.name,
+                ingredients: request.query.ingredients,
                 sortColumn: request.query.sortColumn,
                 sortOrder: request.query.sortOrder,
                 take: request.query.take,
                 skip: request.query.skip,
             })
+            if (recipes) {
+                const formattedRecipes = recipes.map((recipe) => ({
+                    ...recipe,
+                    ingredient_measurement: recipe.ingredient_measurement,
+                }))
+                return reply.send(formattedRecipes)
+            } else {
+                return reply.callNotFound()
+            }
         },
     )
-    fastify.withTypeProvider<TypeBoxTypeProvider>().put('/recipes/:id', {
-        schema: {
-            tags: ['Endpoint: Update a recipe'],
-            description: 'Endpoint to update a recipe',
-            body: UpdateRecipeTypeboxType,
-            response: {
-                200: Type.Object({ recipe_id: Type.String() }),
-                400: Type.Object({ message: Type.String() }),
+    fastify.withTypeProvider<TypeBoxTypeProvider>().put(
+        '/recipes/:id',
+        {
+            schema: {
+                tags: ['Endpoint: Update a recipe'],
+                description: 'Endpoint to update a recipe',
+                body: UpdateRecipeTypeboxType,
+                response: {
+                    200: Type.Object({ recipe_id: Type.String() }),
+                    400: Type.Object({ message: Type.String() }),
+                },
             },
         },
-    }, async function (request: any, reply){
-        return fastify.recipeService.updateOneRecipe({
-            recipe_id: request.params.id,
-            name: request.body.name,
-            description: request.body.description,
-            ingredient_measurement: request.body.ingredient_measurement,
-        })
-    })
+        async function (request: any, reply) {
+            return fastify.recipeService.updateOneRecipe({
+                recipe_id: request.params.id,
+                name: request.body.name,
+                description: request.body.description,
+                ingredient_measurement: request.body.ingredient_measurement,
+            })
+        },
+    )
     fastify.withTypeProvider<TypeBoxTypeProvider>().get(
         '/recipes/:id',
         {
@@ -124,7 +138,7 @@ const recipe: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
             return fastify.recipeService.createOneRecipe({
                 name: request.body.name,
                 description: request.body.description,
-                ingredient_measurement: request.body.measurements,
+                ingredient_measurement: request.body.ingredient_measurement,
             })
         },
     )

@@ -7,6 +7,8 @@ import { Button } from '@repo/ui/button'
 import { Variant } from '@repo/ui/variant'
 import { Header } from '@repo/ui/header'
 import React from 'react'
+import RecipeSearch from './RecipeSearch'
+import RecipeResults from './RecipeResults'
 
 export default function RecipeHome() {
   const { showRecipeForm, setShowRecipeForm } = useContext(RecipeContext)
@@ -28,8 +30,9 @@ export default function RecipeHome() {
         {showRecipeForm ? (
           <RecipeForm />
         ) : (
-          <>
-            <div>🚧 Searching recipes under construction 🚧</div>
+            <>
+            <RecipeSearch />
+            <RecipeResults />
           </>
         )}
       </Flex>

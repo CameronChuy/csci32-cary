@@ -21,6 +21,7 @@ interface FindOneRecipeProps {
 
 interface FindManyRecipeProps {
     name?: string
+    ingredients?: string
     sortColumn?: string
     sortOrder?: SortOrder
     take?: number
@@ -82,7 +83,7 @@ export class RecipeService {
                 recipe_id,
             },
             include: {
-                ingredient_measurements: {
+                ingredient_measurement: {
                     include: {
                         ingredient: true,
                     },
@@ -105,7 +106,7 @@ export class RecipeService {
                 user: {
                     connect: { user_id: user_id },
                 },
-                ingredient_measurements: {
+                ingredient_measurement: {
                     upsert: ingredient_measurement?.map(
                         ({ ingredient_id, quantity, unit, ingredient_name, ingredient_description }) => ({
                             where: {
@@ -143,27 +144,51 @@ export class RecipeService {
 
     async findManyRecipes(props: FindManyRecipeProps) {
         this.logger.info({ props }, 'findManyRecipes')
-        const { name, sortColumn = 'name', sortOrder = SortOrder.ASC, take = DEFAULT_TAKE, skip = DEFAULT_SKIP } = props
-        const orderBy = this.getRecipeOrderBy({sortColumn, sortOrder})
-        return this.prisma.recipe.findMany({
+        const {
+            name,
+            ingredients,
+            sortColumn = 'name',
+            sortOrder = SortOrder.ASC,
+            take = DEFAULT_TAKE,
+            skip = DEFAULT_SKIP,
+        } = props
+        const ingredientsArray = ingredients ? ingredients.split(',') : []
+        this.logger.info({ ingredientsArray }, 'findManyRecipes')
+        const orderBy = this.getRecipeOrderBy({ sortColumn, sortOrder })
+        const recipes = await this.prisma.recipe.findMany({
             where: {
-                name,
+                name: {
+                    contains: name,
+                },
+                AND: ingredientsArray.map((ingredient) => ({
+                    ingredient_measurement: {
+                        some: {
+                            ingredient: {
+                                name: {
+                                    contains: ingredient,
+                                },
+                            },
+                        },
+                    },
+                })),
             },
             orderBy,
             take,
             skip,
             include: {
-                ingredient_measurements: { // Use the correct field name
+                ingredient_measurement: {
                     include: {
                         ingredient: true,
                     },
                 },
             },
         })
+        return recipes
     }
 
     async createOneRecipe(props: CreateOneRecipeProps) {
         const { name, description, ingredient_measurement } = props
+        this.logger.info(ingredient_measurement, 'createOneRecipe')
         const { user_id } = await this.prisma.user.findFirstOrThrow()
         const recipe = await this.prisma.recipe.create({
             data: {
@@ -174,7 +199,7 @@ export class RecipeService {
                 },
                 name,
                 description,
-                ingredient_measurements: {
+                ingredient_measurement: {
                     create: ingredient_measurement.map(
                         ({ ingredient_id, ingredient_name, ingredient_description, unit, quantity }) => ({
                             ingredient: ingredient_id
@@ -199,31 +224,3 @@ export class RecipeService {
         return recipe
     }
 }
-
-/*
-                    {
-                        connect: {
-                            user_id: spoof_user,
-                        },
-                    },
-                */
-
-/*
-
-                ingredient_measurement: ingredient_measurement.map((ingredientMeasurement) => {
-                    return {
-                        connectOrCreate: {
-                            create: {
-                                ingredient: {
-                                    connectOrCreate: {
-                                        create: {
-                                            name,
-                                        },
-                                    },
-                                },
-                            },
-                        },
-                    }
-                }),
-
-*/

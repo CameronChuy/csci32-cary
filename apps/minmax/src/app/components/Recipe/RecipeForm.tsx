@@ -12,7 +12,7 @@ import { UserContext } from '@/context/UserContext'
 import { createRecipe, CreateRecipeProps } from '@/hooks/useRecipes'
 
 export function RecipeForm() {
-    const { setShowRecipeForm } = useContext(RecipeContext)
+    const { setShowRecipeForm, mutate } = useContext(RecipeContext)
     const { user_id } = useContext(UserContext) // Get user_id from UserContext
     const [recipeFormData, setRecipeFormData] = useState({ name: '', description: '' })
     const [ingredientMeasurements, setIngredientMeasurements] = useState([
@@ -32,16 +32,16 @@ export function RecipeForm() {
 
         const recipeName = data.get('recipe-name') as string
         const recipeDescription = data.get('recipe-description') as string
-        const ingredient_measurements = []
+        const ingredient_measurement = []
         for (const key of data.keys()) {
             if (key.includes('ingredient-name')) {
                 const ingredient_name = data.get(key) as string
-                const unit = data.get(key.replace('ingredient-name', 'ingredient-unit')) as string
-                const quantity = Number(data.get(key.replace('ingredient-name', 'ingredient-quantity')))
+                const unit = data.get(key.replace('ingredient-name-', 'ingredient-unit-')) as string
+                const quantity = Number(data.get(key.replace('ingredient-name-', 'ingredient-quantity-')))
                 if (!ingredient_name || !unit || !quantity) {
                     continue
                 }
-                ingredient_measurements.push({
+                ingredient_measurement.push({
                     ingredient_name,
                     unit,
                     quantity,
@@ -51,18 +51,20 @@ export function RecipeForm() {
         if (typeof recipeName !== 'string' || typeof recipeDescription !== 'string') {
             return alert('Please fill out all fields')
         }
-        if (ingredient_measurements.length === 0) {
+        if (ingredient_measurement.length === 0) {
             return alert('Please add at least one ingredient')
         }
         const recipeData: CreateRecipeProps = {
             name: recipeName,
             description: recipeDescription,
-            measurements: ingredient_measurements,
+            ingredient_measurement: ingredient_measurement,
             user_id: user_id, // Use user_id from UserContext
         }
+        console.log('RECIPE DATA', recipeData)
         await createRecipe(recipeData)
         setRecipeFormData({ name: '', description: '' })
         setShowRecipeForm(false)
+        mutate()
         alert(`Your recipe ${recipeName} has been created!`)
     }
 
@@ -200,7 +202,9 @@ export function RecipeForm() {
                     >
                         Add another ingredient
                     </Button>
-                    <Button variant={Variant.PRIMARY} type='submit'>Submit</Button>
+                    <Button variant={Variant.PRIMARY} type="submit">
+                        Submit
+                    </Button>
                 </Flex>
             </form>
         </>
