@@ -20,7 +20,7 @@ export function RecipeForm() {
         {
             ingredient: {
                 name: '',
-                description: '' as string,
+                description: '',
             },
             unit: '',
             quantity: '',
