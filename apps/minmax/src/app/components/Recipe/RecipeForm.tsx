@@ -17,23 +17,22 @@ export function RecipeForm() {
     const [recipeFormData, setRecipeFormData] = useState({ name: '', description: '' })
     const [ingredientMeasurements, setIngredientMeasurements] = useState(
         recipe?.ingredient_measurement || [
-            {
-                ingredient: {
-                    name: '',
-                    description: '',
-                },
-                unit: '',
-                quantity: '',
+        {
+            ingredient: {
+                name: '',
+                description: '' as string,
             },
-        ],
-    )
+            unit: '',
+            quantity: '',
+        },
+    ])
 
     async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
         e.preventDefault()
         const data = new FormData(e.currentTarget)
 
         const recipeName = data.get('recipe-name') as string
-        const recipeDescription = data.get('recipe-description') as string
+        const recipeDescription = data.get('recipe-description')
         const ingredient_measurement = []
         for (const key of data.keys()) {
             if (key.includes('ingredient-name')) {
@@ -45,7 +44,7 @@ export function RecipeForm() {
                 }
                 ingredient_measurement.push({
                     ingredient_id: recipe?.ingredient_measurement.find(
-                        (ingredient) => ingredient.ingredient.name === ingredient_name,
+                      (ingredient) => ingredient.ingredient.name === ingredient_name,
                     )?.ingredient.ingredient_id,
                     ingredient_name,
                     unit,
@@ -69,10 +68,10 @@ export function RecipeForm() {
         if (recipeId) {
             await updateRecipe({ recipe_id: recipeId, params: recipeData })
             alert(`Your recipe ${recipeName} has been updated!`)
-        } else {
+          } else {
             await createRecipe(recipeData)
             alert(`Your recipe ${recipeName} has been created!`)
-        }
+          }
         setRecipeFormData({ name: '', description: '' })
         setShowRecipeForm(false)
         mutate()
@@ -118,15 +117,7 @@ export function RecipeForm() {
                                             const newIngredientMeasurements = ingredientMeasurements.filter(
                                                 (item, idx) => index !== idx,
                                             )
-                                            setIngredientMeasurements(
-                                                newIngredientMeasurements.map((measurement) => ({
-                                                    ...measurement,
-                                                    ingredient: {
-                                                        ...measurement.ingredient,
-                                                        description: measurement.ingredient.description ?? '',
-                                                    },
-                                                })),
-                                            )
+                                            setIngredientMeasurements(newIngredientMeasurements)
                                         }}
                                     >
                                         Remove
@@ -149,20 +140,13 @@ export function RecipeForm() {
                                             ingredient: {
                                                 ...ingredientMeasurements[index]?.ingredient,
                                                 name: newIngredientName,
+
                                             },
                                         },
                                         // take the ingredients after the current index
                                         ...ingredientMeasurements.slice(index + 1),
                                     ]
-                                    setIngredientMeasurements(
-                                        newIngredientMeasurements.map((measurement) => ({
-                                            ...measurement,
-                                            ingredient: {
-                                                ...measurement.ingredient,
-                                                description: measurement.ingredient.description ?? '',
-                                            },
-                                        })),
-                                    )
+                                    setIngredientMeasurements(newIngredientMeasurements)
                                 }}
                             />
                             <Input
@@ -204,15 +188,7 @@ export function RecipeForm() {
                                         // take the ingredients after the current index
                                         ...ingredientMeasurements.slice(index + 1),
                                     ]
-                                    setIngredientMeasurements(
-                                        newIngredientMeasurements.map((measurement) => ({
-                                            ...measurement,
-                                            ingredient: {
-                                                ...measurement.ingredient,
-                                                description: measurement.ingredient.description ?? '',
-                                            },
-                                        })),
-                                    )
+                                    setIngredientMeasurements(newIngredientMeasurements)
                                 }}
                             />
                         </FieldGroup>
