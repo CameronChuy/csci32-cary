@@ -6,12 +6,12 @@ import { Type } from '@sinclair/typebox'
 console.log('DATABASE_URL', process.env.DATABASE_URL)
 
 export const UpsertIngredientMeasurementTypeboxType = Type.Object({
-    unit: Type.String(),
-    quantity: Type.Number(),
     ingredient_id: Type.Optional(Type.String()),
     ingredient_name: Type.Optional(Type.String()),
     ingredient_description: Type.Optional(Type.String()),
-})
+    unit: Type.String(),
+    quantity: Type.Number(),
+  })
 
 export const createRecipeTypeBoxType = Type.Object({
     name: Type.String(),
@@ -40,6 +40,7 @@ export const UpdateRecipeTypeboxType = Type.Object({
     name: Type.Optional(Type.String()),
     description: Type.Optional(Type.String()),
     ingredient_measurement: Type.Optional(Type.Array(UpsertIngredientMeasurementTypeboxType)),
+    delete: Type.Optional(Type.Boolean()),
 })
 
 export const RecipeNotFoundType = Type.Object({
@@ -100,6 +101,7 @@ const recipe: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
                 name: request.body.name,
                 description: request.body.description,
                 ingredient_measurement: request.body.ingredient_measurement,
+                is_deleted: request.body.delete,
             })
         },
     )

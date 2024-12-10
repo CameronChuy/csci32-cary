@@ -9,13 +9,14 @@ import { Button } from '@repo/ui/button'
 import { Variant } from '@repo/ui/variant'
 import { RecipeContext } from '@/context/RecipeContext'
 import { UserContext } from '@/context/UserContext'
-import { createRecipe, CreateRecipeProps } from '@/hooks/useRecipes'
+import { createRecipe, CreateRecipeProps, updateRecipe } from '@/hooks/useRecipes'
 
 export function RecipeForm() {
-    const { setShowRecipeForm, mutate } = useContext(RecipeContext)
+    const { recipe, recipeId, setShowRecipeForm, mutate } = useContext(RecipeContext)
     const { user_id } = useContext(UserContext) // Get user_id from UserContext
     const [recipeFormData, setRecipeFormData] = useState({ name: '', description: '' })
-    const [ingredientMeasurements, setIngredientMeasurements] = useState([
+    const [ingredientMeasurements, setIngredientMeasurements] = useState(
+        recipe?.ingredient_measurement || [
         {
             ingredient: {
                 name: '',
@@ -42,6 +43,9 @@ export function RecipeForm() {
                     continue
                 }
                 ingredient_measurement.push({
+                    ingredient_id: recipe?.ingredient_measurement.find(
+                      (ingredient) => ingredient.ingredient.name === ingredient_name,
+                    )?.ingredient.ingredient_id,
                     ingredient_name,
                     unit,
                     quantity,
@@ -61,11 +65,16 @@ export function RecipeForm() {
             user_id: user_id, // Use user_id from UserContext
         }
         console.log('RECIPE DATA', recipeData)
-        await createRecipe(recipeData)
+        if (recipeId) {
+            await updateRecipe({ recipe_id: recipeId, params: recipeData })
+            alert(`Your recipe ${recipeName} has been updated!`)
+          } else {
+            await createRecipe(recipeData)
+            alert(`Your recipe ${recipeName} has been created!`)
+          }
         setRecipeFormData({ name: '', description: '' })
         setShowRecipeForm(false)
         mutate()
-        alert(`Your recipe ${recipeName} has been created!`)
     }
 
     return (

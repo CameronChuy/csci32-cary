@@ -12,6 +12,10 @@ export type RecipeContextType = {
     setIngredients: (ingredients: string[]) => void
     setIngredientQuery: (query: string) => void
     showRecipeForm: boolean
+    recipeId: string | null
+    setRecipeId: (id: string | null) => void
+    recipe: RecipeType | null
+    setRecipe: (recipe: RecipeType | null) => void
     setShowRecipeForm: (showRecipeForm: boolean) => void
 }
 
@@ -46,6 +50,10 @@ const RecipeContext = createContext<RecipeContextType>({
     setIngredientQuery: () => {},
     showRecipeForm: false,
     setShowRecipeForm: () => {},
+    recipe: null,
+    setRecipe: () => {},
+    recipeId: null,
+    setRecipeId: () => {},
 })
 
 const RecipeProvider = ({ children }: { children: ReactNode }) => {
@@ -59,6 +67,8 @@ const RecipeProvider = ({ children }: { children: ReactNode }) => {
     const [recipeNameQuery, setRecipeNameQuery] = useState('')
     const [ingredientQuery, setIngredientQuery] = useState('')
     const [ingredients, setIngredients] = useState<string[]>([])
+    const [recipeId, setRecipeId] = useState<string | null>(null)
+    const [recipe, setRecipe] = useState<RecipeType | null>(null)
 
     const { data: recipes = [], mutate } = useRecipes({ name: recipeNameQuery, ingredients: ingredients.join(',') })
 
@@ -76,6 +86,10 @@ const RecipeProvider = ({ children }: { children: ReactNode }) => {
                 setIngredientQuery,
                 showRecipeForm,
                 setShowRecipeForm,
+                recipe,
+                setRecipe,
+                recipeId,
+                setRecipeId,
             }}
         >
             {children}

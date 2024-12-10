@@ -28,6 +28,7 @@ model Recipe {
   recipe_id String @id @default(cuid())
   name  String?
   description String?
+  is_deleted Boolean @default(false)
   ingredient_measurement IngredientMeasurement[]
   user User @relation(fields: [user_id], references: [user_id])
   user_id  String

@@ -1,9 +1,11 @@
-import { IngredientMeasurement } from '@/context/RecipeContext'
+import { IngredientMeasurement, RecipeContext } from '@/context/RecipeContext'
+import { deleteRecipe, getRecipe } from '@/hooks/useRecipes'
 import { Button } from '@repo/ui/button'
 import { Flex } from '@repo/ui/flex'
 import { Header } from '@repo/ui/header'
 import { Size } from '@repo/ui/size'
 import { Variant } from '@repo/ui/variant'
+import { useContext } from 'react'
 
 // props
 export type RecipeCardProps = {
@@ -13,7 +15,8 @@ export type RecipeCardProps = {
     ingredient_measurement: IngredientMeasurement[] | null
 }
 
-export default function RecipeCard({ name, description, ingredient_measurement }: RecipeCardProps) {
+export default function RecipeCard({ name, description, ingredient_measurement, recipe_id }: RecipeCardProps) {
+    const { mutate, setShowRecipeForm, setRecipeId, setRecipe } = useContext(RecipeContext)
     console.log(ingredient_measurement)
     return (
         <div className="border-2 border-solid rounded-md border-red-500 bg-red-50 basis-1/4 shadow-md min-w-56 flex-grow p-2">
@@ -25,14 +28,23 @@ export default function RecipeCard({ name, description, ingredient_measurement }
                     <Button
                         size={Size.XSMALL}
                         variant={Variant.PRIMARY}
-                        onClick={() => alert('Update not implemented')}
+                        onClick={async () => {
+                          const newRecipe = await getRecipe(recipe_id)
+                          setRecipeId(recipe_id)
+                          setRecipe(newRecipe)
+                          setShowRecipeForm(true)
+                        }}
                     >
                         Update
                     </Button>
                     <Button
                         size={Size.XSMALL}
                         variant={Variant.PRIMARY}
-                        onClick={() => alert('Delete not implemented')}
+                        onClick={async() => {
+                            await deleteRecipe(recipe_id)
+                            mutate()
+                            alert(`Recipe ${name} deleted`)
+                        }}
                     >
                         Delete
                     </Button>
