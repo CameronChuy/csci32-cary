@@ -123,7 +123,7 @@ export function RecipeForm() {
                                                     ...measurement,
                                                     ingredient: {
                                                         ...measurement.ingredient,
-                                                        description: measurement.ingredient.description || '',
+                                                        description: measurement.ingredient.description ?? '',
                                                     },
                                                 })),
                                             )
@@ -154,7 +154,15 @@ export function RecipeForm() {
                                         // take the ingredients after the current index
                                         ...ingredientMeasurements.slice(index + 1),
                                     ]
-                                    setIngredientMeasurements(newIngredientMeasurements)
+                                    setIngredientMeasurements(
+                                        newIngredientMeasurements.map((measurement) => ({
+                                            ...measurement,
+                                            ingredient: {
+                                                ...measurement.ingredient,
+                                                description: measurement.ingredient.description ?? '',
+                                            },
+                                        })),
+                                    )
                                 }}
                             />
                             <Input
@@ -196,7 +204,15 @@ export function RecipeForm() {
                                         // take the ingredients after the current index
                                         ...ingredientMeasurements.slice(index + 1),
                                     ]
-                                    setIngredientMeasurements(newIngredientMeasurements)
+                                    setIngredientMeasurements(
+                                        newIngredientMeasurements.map((measurement) => ({
+                                            ...measurement,
+                                            ingredient: {
+                                                ...measurement.ingredient,
+                                                description: measurement.ingredient.description ?? '',
+                                            },
+                                        })),
+                                    )
                                 }}
                             />
                         </FieldGroup>
