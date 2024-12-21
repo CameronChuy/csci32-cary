@@ -5,7 +5,7 @@ generator client {
 
 datasource db {
   provider     = "mysql"
-  url          =  env("DATABASE_URL") //"mysql://root@127.0.0.1:3306/turborepo"
+  url          =  "mysql://root@127.0.0.1:3306/turborepo"
   relationMode = "prisma"
 }
 
@@ -15,6 +15,7 @@ model User {
   email         String?   @unique
   emailVerified DateTime?
   recipes   Recipe[]
+  // Verification Verification[]
 }
 
 model Ingredient {
@@ -43,3 +44,28 @@ model IngredientMeasurement {
   unit String
   quantity Int @default(0)
 }
+
+
+// FINAL DATABASE SCHEMA
+
+model Plant {
+    plant_id String @id @default(cuid())
+    park_tag_id String @default(cuid())
+    type String?
+    longitude String?
+    latitude String?
+    uploaded_date DateTime @default(now())
+    last_modified_date DateTime @default(now())
+    is_deleted Boolean @default(false)
+    // verifications Verification[]
+}
+// /*
+// model Verification {
+//     verification_id String @id @default(cuid())
+//     plant_id String
+//     user_id String
+//     plant Plant @relation(fields: [plant_id], references: [plant_id])
+//     new_User User @relation(fields: [user_id], references: [user_id])
+//     verification_date DateTime @default(now())
+//     verification_status Boolean @default(true)
+// }*/

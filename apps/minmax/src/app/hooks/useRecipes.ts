@@ -13,7 +13,7 @@ export interface CreateRecipeProps {
 
 export type UpdateRecipeProps = {
     name?: string
-    ingredient_measurements?: {
+    ingredient_measurement?: {
         ingredient_name: string
         quantity: number
         unit: string

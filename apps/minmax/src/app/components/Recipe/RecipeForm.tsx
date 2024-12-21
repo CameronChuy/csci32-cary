@@ -15,17 +15,18 @@ export function RecipeForm() {
     const { recipe, recipeId, setShowRecipeForm, mutate } = useContext(RecipeContext)
     const { user_id } = useContext(UserContext) // Get user_id from UserContext
     const [recipeFormData, setRecipeFormData] = useState({ name: '', description: '' })
-    const [ingredientMeasurements, setIngredientMeasurements] = useState(
+    const [ingredientmeasurement, setingredientmeasurement] = useState(
         recipe?.ingredient_measurement || [
-        {
-            ingredient: {
-                name: '',
-                description: '',
+            {
+                ingredient: {
+                    name: '',
+                    description: '',
+                },
+                unit: '',
+                quantity: '',
             },
-            unit: '',
-            quantity: '',
-        },
-    ])
+        ],
+    )
 
     async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
         e.preventDefault()
@@ -44,7 +45,7 @@ export function RecipeForm() {
                 }
                 ingredient_measurement.push({
                     ingredient_id: recipe?.ingredient_measurement.find(
-                      (ingredient) => ingredient.ingredient.name === ingredient_name,
+                        (ingredient) => ingredient.ingredient.name === ingredient_name,
                     )?.ingredient.ingredient_id,
                     ingredient_name,
                     unit,
@@ -68,10 +69,10 @@ export function RecipeForm() {
         if (recipeId) {
             await updateRecipe({ recipe_id: recipeId, params: recipeData })
             alert(`Your recipe ${recipeName} has been updated!`)
-          } else {
+        } else {
             await createRecipe(recipeData)
             alert(`Your recipe ${recipeName} has been created!`)
-          }
+        }
         setRecipeFormData({ name: '', description: '' })
         setShowRecipeForm(false)
         mutate()
@@ -105,19 +106,19 @@ export function RecipeForm() {
                         />
                     </Field>
                 </FieldGroup>
-                {ingredientMeasurements.map(({ unit, quantity, ingredient }, index) => {
+                {ingredientmeasurement.map(({ unit, quantity, ingredient }, index) => {
                     return (
                         <FieldGroup className="ml-4 bg-gray-100 shadow-sm rounded-lg p-4" key={index}>
                             <Flex>
                                 <Label>Ingredient {index + 1}</Label>
-                                {ingredientMeasurements.length > 1 && (
+                                {ingredientmeasurement.length > 1 && (
                                     <Button
                                         variant={Variant.SECONDARY}
                                         onClick={() => {
-                                            const newIngredientMeasurements = ingredientMeasurements.filter(
+                                            const newingredientmeasurement = ingredientmeasurement.filter(
                                                 (item, idx) => index !== idx,
                                             )
-                                            setIngredientMeasurements(newIngredientMeasurements)
+                                            setingredientmeasurement(newingredientmeasurement)
                                         }}
                                     >
                                         Remove
@@ -131,22 +132,26 @@ export function RecipeForm() {
                                 name={`ingredient-name-${index}`}
                                 id={`ingredient-name-${index}`}
                                 onChange={(newIngredientName) => {
-                                    const newIngredientMeasurements = [
+                                    const newingredientmeasurement = [
                                         // take the ingredients before the current index
-                                        ...ingredientMeasurements.slice(0, index),
+                                        ...ingredientmeasurement.slice(0, index),
                                         // update the ingredient at the current index
                                         {
-                                            ...ingredientMeasurements[index],
+                                            ...ingredientmeasurement[index],
                                             ingredient: {
+<<<<<<< HEAD
                                                 ...ingredientMeasurements[index]?.ingredient,
+=======
+                                                ...ingredientmeasurement[index].ingredient,
+>>>>>>> 8606c07 (Initial plant tracking commit)
                                                 name: newIngredientName,
 
                                             },
                                         },
                                         // take the ingredients after the current index
-                                        ...ingredientMeasurements.slice(index + 1),
+                                        ...ingredientmeasurement.slice(index + 1),
                                     ]
-                                    setIngredientMeasurements(newIngredientMeasurements)
+                                    setingredientmeasurement(newingredientmeasurement)
                                 }}
                             />
                             <Input
@@ -156,18 +161,18 @@ export function RecipeForm() {
                                 name={`ingredient-quantity-${index}`}
                                 id={`ingredient-quantity-${index}`}
                                 onChange={(newQuantity) => {
-                                    const newIngredientMeasurements = [
+                                    const newingredientmeasurement = [
                                         // take the ingredients before the current index
-                                        ...ingredientMeasurements.slice(0, index),
+                                        ...ingredientmeasurement.slice(0, index),
                                         // update the ingredient at the current index
                                         {
-                                            ...ingredientMeasurements[index],
+                                            ...ingredientmeasurement[index],
                                             quantity: Number(newQuantity), // Ensure quantity is a number
                                         },
                                         // take the ingredients after the current index
-                                        ...ingredientMeasurements.slice(index + 1),
+                                        ...ingredientmeasurement.slice(index + 1),
                                     ]
-                                    setIngredientMeasurements(newIngredientMeasurements)
+                                    setingredientmeasurement(newingredientmeasurement)
                                 }}
                             />
                             <Input
@@ -177,18 +182,18 @@ export function RecipeForm() {
                                 name={`ingredient-unit-${index}`}
                                 id={`ingredient-unit-${index}`}
                                 onChange={(newUnit) => {
-                                    const newIngredientMeasurements = [
+                                    const newingredientmeasurement = [
                                         // take the ingredients before the current index
-                                        ...ingredientMeasurements.slice(0, index),
+                                        ...ingredientmeasurement.slice(0, index),
                                         // update the ingredient at the current index
                                         {
-                                            ...ingredientMeasurements[index],
+                                            ...ingredientmeasurement[index],
                                             unit: newUnit,
                                         },
                                         // take the ingredients after the current index
-                                        ...ingredientMeasurements.slice(index + 1),
+                                        ...ingredientmeasurement.slice(index + 1),
                                     ]
-                                    setIngredientMeasurements(newIngredientMeasurements)
+                                    setingredientmeasurement(newingredientmeasurement)
                                 }}
                             />
                         </FieldGroup>
@@ -197,8 +202,8 @@ export function RecipeForm() {
                 <Flex className="justify-end gap-4">
                     <Button
                         onClick={() => {
-                            setIngredientMeasurements([
-                                ...ingredientMeasurements,
+                            setingredientmeasurement([
+                                ...ingredientmeasurement,
                                 {
                                     ingredient: {
                                         name: '',
