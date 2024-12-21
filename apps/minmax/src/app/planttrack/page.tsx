@@ -1,7 +1,5 @@
 'use client'
-import { UserProvider } from '@/context/UserContext'
-import { RecipeProvider } from '@/context/RecipeContext'
-import RecipeHome from '@/components/Recipe/RecipeHome'
+// import { UserProvider } from '@/context/UserContext'
 import PlantHome from '@/components/Plant/PlantHome'
 import { PlantProvider } from '@/context/PlantContext'
 

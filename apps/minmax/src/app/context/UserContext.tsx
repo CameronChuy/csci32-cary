@@ -1,5 +1,5 @@
 // UserContext.tsx
-import React, { createContext, ReactNode, useContext, useState } from 'react';
+/*import React, { createContext, ReactNode, useContext, useState } from 'react';
 
 export type UserContextType = {
     user_id: string;
@@ -27,4 +27,4 @@ const UserProvider = async ({ children }: { children: ReactNode }) => {
     );
 };
 
-export { UserContext, UserProvider };
+export { UserContext, UserProvider };*/

@@ -8,7 +8,6 @@ import { Flex } from '@repo/ui/flex'
 import { Button } from '@repo/ui/button'
 import { Variant } from '@repo/ui/variant'
 import { PlantContext } from '@/context/PlantContext'
-import { UserContext } from '@/context/UserContext'
 import { createPlant, CreateOnePlantProps, updatePlant } from '@/hooks/usePlants'
 
 export function PlantForm() {
